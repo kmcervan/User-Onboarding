@@ -1,6 +1,7 @@
 import './App.css';
 import React, { useState, useEffect } from 'react';
 import Form from './Form';
+import User from './User';
 
 import schema from './schema';
 import axios from 'axios';
@@ -24,17 +25,18 @@ const initialDisabled = true;
 
 function App() {
 // STATES //
-  const [signUp, setSignUp] = useState(initialUsers) // array of new people
-  const [formValues, setFormValues] = useState(defaultValues) //object
-  const [formErrors, setFormErrors] = useState(initialFormErrors) //object
-  const [disable, setDisable] = useState(initialDisabled) // boolean
+  const [signUp, setSignUp] = useState(initialUsers); // array of new people
+  const [formValues, setFormValues] = useState(defaultValues); //object
+  const [formErrors, setFormErrors] = useState(initialFormErrors); //object
+  const [disable, setDisable] = useState(initialDisabled); // boolean
 
-  const postNewUser = (newUser) => {
+  const postNewUser = (user) => {
     axios
-    .post('https://reqres.in/api/users', newUser)
+    .post('https://reqres.in/api/users', user)
     .then((res) => {
+      console.log(res);
       setSignUp([res.data, ...signUp]);
-      setFormValues([defaultValues]);
+      setFormValues(defaultValues);
     })
     .catch((err) => {
       console.log(err);
@@ -78,16 +80,15 @@ function App() {
 
   return (
     <div className="App">
-      <Form
-      values={formValues}
-      change={change}
-      submit={formSubmit}
-      disabled={disable}
-      errors={formErrors}
-      />
+
+    <Form values={formValues} change={change} submit={formSubmit} disabled={disable} errors={formErrors} />
+    {signUp.map((user) => {
+         return <User key={user.id} details={user}/>;
+       })}
       
     </div>
   );
 }
 
+      
 export default App;

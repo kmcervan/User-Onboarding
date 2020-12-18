@@ -46,11 +46,13 @@ describe("onboarding app", () => {
         passwordInput().type("QW12345");
         termsSelect().check();
         submitButton().click();
-    })
+    });
     it("can detect when something is not complete", () => {
         nameInput().type("Ka");
         error().should("have.value", "");
-    } )
+        
+        submitButton().should("be.disabled");
+    } );
 
     
 } )
